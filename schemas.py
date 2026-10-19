@@ -1,12 +1,13 @@
-﻿from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from typing import Optional
 from datetime import datetime
+from uuid import UUID
 
 
 class UserCreate(BaseModel):
     username: str = Field(min_length=3)
     email: str
-    hashed_password: str
+    password: str = Field(min_length=8, max_length=72)
 
 
 class UserUpdate(BaseModel):
@@ -15,7 +16,7 @@ class UserUpdate(BaseModel):
 
 
 class UserResponse(BaseModel):
-    id: int
+    id: UUID
     username: str
     email: str
     created_at: datetime
@@ -29,8 +30,8 @@ class UserSettingsUpsert(BaseModel):
 
 
 class UserSettingsResponse(BaseModel):
-    id: int
-    user_id: int
+    id: UUID
+    user_id: UUID
     short_max_hours: float
     medium_max_hours: float
 
@@ -38,15 +39,15 @@ class UserSettingsResponse(BaseModel):
 
 
 class PlatformAccountCreate(BaseModel):
-    user_id: int
+    user_id: UUID
     platform_name: str = Field(min_length=1)
     platform_user_id: str = Field(min_length=1)
     access_token: Optional[str] = None
 
 
 class PlatformAccountResponse(BaseModel):
-    id: int
-    user_id: int
+    id: UUID
+    user_id: UUID
     platform_name: str
     platform_user_id: str
     connected_at: datetime
@@ -60,7 +61,7 @@ class CategoryCreate(BaseModel):
 
 
 class CategoryResponse(BaseModel):
-    id: int
+    id: UUID
     name: str
 
     model_config = {"from_attributes": True}
@@ -80,7 +81,7 @@ class GameUpdate(BaseModel):
 
 
 class GameResponse(BaseModel):
-    id: int
+    id: UUID
     title: str
     rawg_id: Optional[int]
     estimated_hours: float
@@ -91,8 +92,8 @@ class GameResponse(BaseModel):
 
 
 class LibraryEntryCreate(BaseModel):
-    platform_account_id: int
-    game_id: int
+    platform_account_id: UUID
+    game_id: UUID
     completed: bool = False
 
 
@@ -102,11 +103,90 @@ class LibraryEntryUpdate(BaseModel):
 
 
 class LibraryEntryResponse(BaseModel):
-    id: int
-    platform_account_id: int
-    game_id: int
+    id: UUID
+    platform_account_id: UUID
+    game_id: UUID
     completed: bool
     added_at: datetime
     last_played_at: Optional[datetime]
 
     model_config = {"from_attributes": True}
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+
+
+class PermissionCreate(BaseModel):
+    name: str = Field(min_length=1)
+
+
+class PermissionResponse(BaseModel):
+    id: UUID
+    name: str
+
+    model_config = {"from_attributes": True}
+
+
+class RoleCreate(BaseModel):
+    name: str = Field(min_length=1)
+
+
+class RoleResponse(BaseModel):
+    id: UUID
+    name: str
+    permissions: list[PermissionResponse] = []
+
+    model_config = {"from_attributes": True}
+
+
+class SuggestionResponse(BaseModel):
+    id: Optional[UUID] = None
+    title: str
+    estimated_hours: float
+    cover_image_url: Optional[str] = None
+    source: str
+    platform: Optional[str] = None
+    platforms: list[str] = []
+    link: Optional[str] = None
+    rawg_id: Optional[int] = None
+
+
+class PlayLaterAdd(BaseModel):
+    game_id: Optional[UUID] = None
+    rawg_id: Optional[int] = None
+
+
+class LibraryOverviewEntry(BaseModel):
+    entry_id: UUID
+    platform_name: str
+    completed: bool
+
+
+class LibraryOverviewItem(BaseModel):
+    game_id: UUID
+    title: str
+    estimated_hours: float
+    cover_image_url: Optional[str] = None
+    completed: bool
+    categories: list[str] = []
+    platforms: list[str] = []
+    entries: list[LibraryOverviewEntry] = []
+    link: Optional[str] = None
+
+
+class ConnectCodeRequest(BaseModel):
+    platform: str = Field(min_length=1)
+    code: str = Field(min_length=1)
+
+
+class ManualAddRequest(BaseModel):
+    platform: str = Field(min_length=1)
+    rawg_id: int
+
+
+class SteamImportResult(BaseModel):
+    imported: int
+    skipped: int
+    total: int

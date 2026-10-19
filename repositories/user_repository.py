@@ -1,4 +1,5 @@
-﻿from sqlalchemy.orm import Session
+﻿from uuid import UUID
+from sqlalchemy.orm import Session
 from models import User, UserSettings, PlatformAccount, LibraryEntry, Game
 from repositories.base_repository import BaseRepository
 
@@ -13,7 +14,7 @@ class UserRepository(BaseRepository[User]):
     def get_by_email(self, email: str) -> User | None:
         return self.db.query(User).filter(User.email == email).first()
 
-    def get_owner_by_library_entry_id(self, entry_id: int) -> User | None:
+    def get_owner_by_library_entry_id(self, entry_id: UUID) -> User | None:
         return (
             self.db.query(User)
             .join(PlatformAccount, PlatformAccount.user_id == User.id)
@@ -38,5 +39,5 @@ class UserSettingsRepository(BaseRepository[UserSettings]):
     def __init__(self, db: Session):
         super().__init__(db, UserSettings)
 
-    def get_by_user_id(self, user_id: int) -> UserSettings | None:
+    def get_by_user_id(self, user_id: UUID) -> UserSettings | None:
         return self.db.query(UserSettings).filter(UserSettings.user_id == user_id).first()

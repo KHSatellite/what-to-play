@@ -1,25 +1,28 @@
 [project]
 name = "fastapi-ogrenme"
 version = "0.1.0"
-description = "Add your description here"
+description = "Steam, Epic ve GOG kütüphanelerini birleştirip ne oynayacağını öneren FastAPI + React uygulaması"
 readme = "README.md"
 authors = [
-    { name = "hanbabakadir", email = "hanbaba.kadir@hotmail.com" }
+    { name = "hanbabakadir", email = "hanbaba.kadir8@gmail.com" }
 ]
 requires-python = ">=3.12"
 dependencies = [
+    "bcrypt>=5.0.0",
+    "cachetools>=7.1.8",
     "fastapi[standard]>=0.141.1",
+    "httpx>=0.28.1",
+    "pika>=1.4.4",
     "psycopg2-binary>=2.9.12",
     "pydantic-settings>=2.15.0",
+    "pyjwt>=2.13.0",
+    "redis>=8.1.0",
+    "sentry-sdk>=2.68.1",
     "sqlalchemy>=2.0.52",
 ]
 
-[project.scripts]
-fastapi-ogrenme = "fastapi_ogrenme:main"
-
-[build-system]
-requires = ["uv_build>=0.12.7,<0.13.0"]
-build-backend = "uv_build"
+[tool.uv]
+package = false
 
 [dependency-groups]
 dev = [

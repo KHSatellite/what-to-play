@@ -1,0 +1,8 @@
+﻿{
+  "user_not_found": "User not found",
+  "username_taken": "Username is already taken",
+  "email_taken": "Email is already taken",
+  "integrity_conflict": "This record already exists or violates a related database constraint",
+  "invalid_credentials": "Incorrect username or password",
+  "permission_denied": "You do not have permission for this action"
+}

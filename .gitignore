@@ -1,15 +1,46 @@
-# Python-generated files
+# Gizli bilgiler: API key'ler, şifreler, token'lar
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Python
 __pycache__/
 *.py[oc]
 build/
 dist/
 wheels/
-*.egg-info
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
 
-# Virtual environments
-.venv
-.env
-.venv
-__pycache__
-books.db
+# Sanal ortam
+.venv/
+venv/
+
+# Yerel veritabanları
 *.db
+*.sqlite3
+
+# Frontend
+node_modules/
+frontend/dist/
+frontend/.env*
+!frontend/.env.example
+
+
+# Loglar
+*.log
+logs/
+
+# Editör ve işletim sistemi dosyaları
+.vscode/
+.idea/
+.claude/
+.DS_Store
+Thumbs.db
+desktop.ini

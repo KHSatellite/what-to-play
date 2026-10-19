@@ -1,7 +1,14 @@
-﻿from typing import TypeVar, Generic, Type, Optional
+from typing import TypeVar, Generic, Type, Optional, Protocol
+from uuid import UUID
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 
-ModelType = TypeVar("ModelType")
+
+class HasId(Protocol):
+    id: UUID
+
+
+ModelType = TypeVar("ModelType", bound=HasId)
 
 
 class BaseRepository(Generic[ModelType]):
@@ -12,8 +19,11 @@ class BaseRepository(Generic[ModelType]):
     def get_all(self) -> list[ModelType]:
         return self.db.query(self.model).all()
 
-    def get_by_id(self, entity_id: int) -> Optional[ModelType]:
-        return self.db.query(self.model).filter(self.model.id == entity_id).first()
+    def count(self) -> int:
+        return self.db.query(func.count(self.model.id)).scalar() or 0
+
+    def get_by_id(self, entity_id: UUID) -> Optional[ModelType]:
+        return self.db.get(self.model, entity_id)
 
     def create(self, entity: ModelType) -> ModelType:
         self.db.add(entity)

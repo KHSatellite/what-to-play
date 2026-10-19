@@ -1,0 +1,8 @@
+﻿{
+  "user_not_found": "Kullanıcı bulunamadı",
+  "username_taken": "Kullanıcı adı zaten kullanılıyor",
+  "email_taken": "Email zaten kullanılıyor",
+  "integrity_conflict": "Bu kayıt zaten mevcut ya da ilişkili bir veritabanı kısıtını ihlal ediyor",
+  "invalid_credentials": "Kullanıcı adı ya da şifre hatalı",
+  "permission_denied": "Bu işlem için yetkiniz yok"
+}
